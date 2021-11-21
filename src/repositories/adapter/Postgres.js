@@ -1,15 +1,34 @@
 const pgp = require("pg-promise")();
 
-const PG_CONECTION = {
-  host: process.env.POSTGRES_HOST,
-  port: process.env.PG_PORT ? Number(process.env.PG_PORT) : 5432,
-  user: process.env.POSTGRES_USER,
-  password: process.env.POSTGRES_PASS,
-  database: process.env.POSTGRES_DATABASE,
-  connectionTimeoutMillis: 1000,
-  max: 25,
-  idleTimeoutMillis: 2000,
-  query_timeout: 3500,
+const DEFAULT_CONNECTION_PARAMETERS = {
+  connectionTimeoutMillis: 800,
+  max: 30,
+  idleTimeoutMillis: 3000,
+  query_timeout: 2500,
 };
 
-const zf = pgp(PG_CONECTION);
+const PG_CONECTION_ZONIFICACION = {
+  ...DEFAULT_CONNECTION_PARAMETERS,
+  host: process.env.POSTGRES_HOST_ZF,
+  port: process.env.PG_PORT_ZF ? Number(process.env.PG_PORT_ZF) : 5432,
+  user: process.env.POSTGRES_USER_ZF,
+  password: process.env.POSTGRES_PASS_ZF,
+  database: process.env.POSTGRES_DATABASE_ZF,
+};
+
+const PG_CONECTION_GEO = {
+  ...DEFAULT_CONNECTION_PARAMETERS,
+  host: process.env.POSTGRES_HOST_GEO,
+  port: process.env.PG_PORT_GEO ? Number(process.env.PG_PORT_ZF) : 5432,
+  user: process.env.POSTGRES_USER_GEO,
+  password: process.env.POSTGRES_PASS_GEO,
+  database: process.env.POSTGRES_DATABASE_GEO,
+};
+
+const zf = pgp(PG_CONECTION_ZONIFICACION);
+const geo = pgp(PG_CONECTION_GEO);
+
+module.exports = {
+  zf: zf,
+  geo: geo,
+};

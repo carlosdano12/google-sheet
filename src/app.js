@@ -1,7 +1,7 @@
 const exprees = require("express");
-
+require("dotenv").config();
 require("./spreadsheet");
-
+require("./repositories/dao/ZonificacionDao");
 const app = exprees();
 
 //routes

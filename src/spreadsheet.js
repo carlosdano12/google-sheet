@@ -4,35 +4,48 @@ const credenciales = require("../credenciales.json");
 
 let googleID = "11cnM3Ya3xiPW47oNzt_xmos63uQKqRhDVvK-xRfd66E";
 
+const {
+  getCountOrigenCM,
+  getCountOrigenTEMP,
+  getCountOrigenSERVI,
+  getCountDirSinResolvCorMap,
+  getCountPetiResolvZonificacion,
+  getCountPetiServiConSubZona,
+  getCountPetiServiSinSubZona,
+  getCountPetiServiDirUnicas,
+} = require("./repositories/dao/ZonificacionDao");
+
 async function accesGoogleSheet() {
   const document = new GoogleSpreadsheet(googleID);
   await document.useServiceAccountAuth(credenciales);
   await document.loadInfo();
-  let i = 4;
+  let i = 13;
   const sheet = document.sheetsByIndex[0];
-  await sheet.loadCells(`A${i}:J${i}`);
+  await sheet.loadCells(`A${i}:S${i}`);
   const rows = await sheet.getRows();
-  //   rows[2]["Guías (Direcciones) totales del día"] = "soy yo";
-  //   rows[2]["Direcciones (distintas) del día"] = "soy yo2";
-  //   rows[2]["Direcciones (distintas) del día DD y D"] = "soy yo3";
-  //   rows[2]["Direcciones zonificadas (DD y D)"] = "soy yo4";
-  //   rows[2]["Direcciones sin zonificar (sin zonaHub y equipo)"] = "soy yo5";
-  //   rows[2].save();
+
+  //se obtienen las celdas
+  const origenCM = sheet.getCellByA1("F" + i);
+  const origenTEMP = sheet.getCellByA1("G" + i);
+  const origenSERVI = sheet.getCellByA1("H" + i);
+  const dirSinResolvCorMap = sheet.getCellByA1("I" + i);
+  const petResolvZoni = sheet.getCellByA1("L" + i);
+  const petiServiConSubZona = sheet.getCellByA1("O" + i);
+  const petiServiSinSubZona = sheet.getCellByA1("P" + i);
+  const petiServiDirUnicas = sheet.getCellByA1("S" + i);
+
+  //se actualizan los valores  de las celdas
+  origenCM.value = await getCountOrigenCM();
+  origenTEMP.value = await getCountOrigenTEMP();
+  origenSERVI.value = await getCountOrigenSERVI();
+  dirSinResolvCorMap.value = await getCountDirSinResolvCorMap();
+  petResolvZoni.value = await getCountPetiResolvZonificacion();
+  petiServiConSubZona.value = await getCountPetiServiConSubZona();
+  petiServiSinSubZona.value = await getCountPetiServiSinSubZona();
+  await sheet.saveUpdatedCells();
   console.log(sheet.getCellByA1("H" + i).value);
-}
-
-async function save() {
-  const document = new GoogleSpreadsheet(googleID);
-  await document.useServiceAccountAuth(credenciales);
-  await document.loadInfo();
-
-  const sheet = document.sheetsByIndex[0];
-  await sheet.addRow({
-    ["Guías (Direcciones) totales del día"]:
-      "Guías (Direcciones) totales del día",
-    c: "holaC",
-  });
-  console.log("ingo guardada");
+  console.log("La base de datos de virus ah sido actualizada...");
+  console.log("\x1b[40m", "SOS UN CRACK!!!!!");
 }
 
 accesGoogleSheet();
