@@ -52,6 +52,7 @@ async function getCountPetiServiSinSubZona() {
   return Number(count);
 }
 
+//S
 async function getCountPetiServiDirUnicas() {
   const query = `select count(distinct(concat(ps.direccion||'-'||ps.codigo_dane_ciudad))) from peticiones_servinformacion ps
     where ps.fecha = to_char(current_date -1, 'MM/DD/YYYY' );`;
