@@ -2,7 +2,7 @@ const { GoogleSpreadsheet } = require("google-spreadsheet");
 
 const credenciales = require("../credenciales.json");
 
-let googleID = "11cnM3Ya3xiPW47oNzt_xmos63uQKqRhDVvK-xRfd66E";
+let googleID = "1btSma5oDW6z03lP0W3YRdOEUD4d0_aM4Ax05VDD_b4Q";
 
 const {
   getCountTotalGuias,
@@ -26,7 +26,7 @@ async function accesGoogleSheet() {
   const document = new GoogleSpreadsheet(googleID);
   await document.useServiceAccountAuth(credenciales);
   await document.loadInfo();
-  let i = 13;
+  let i = 11;
   const sheet = document.sheetsByIndex[0];
   await sheet.loadCells(`A${i}:S${i}`);
   const rows = await sheet.getRows();

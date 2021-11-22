@@ -2,7 +2,7 @@ const { geo } = require("../adapter/Postgres");
 
 //Este archivo contiene todas las consultas al 30
 async function getCountTotalGuias() {
-  const query = `select count(distinct(gr.codigo_remision)) from generacion_rotulos gr where gr.fecha_registro= '2021-11-17';`;
+  const query = `select count(distinct(gr.codigo_remision)) from generacion_rotulos gr where gr.fecha_registro= current_date - 1;`;
   const { count } = await geo.one(query);
   console.log("getCountTotalGuias:", count);
   return Number(count);
