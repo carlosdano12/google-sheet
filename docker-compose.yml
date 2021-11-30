@@ -1,0 +1,28 @@
+version: '3.7'
+
+services:
+    nginx-proxy:
+        restart: always
+        image: jwilder/nginx-proxy:alpine
+        volumes:
+            - /var/run/docker.sock:/tmp/docker.sock:ro
+        environment:
+            - DEFAULT_HOST=proxy.cm-geo-indicadores
+        depends_on:
+            - cm-geo-indicadores
+        logging:
+            driver: 'json-file'
+            options:
+                max-size: '5m'
+                max-file: '10'
+    cm-geo-indicadores:
+        restart: always
+        build: .
+        env_file: .env
+        environment:
+            - VIRTUAL_HOST=proxy.cm-geo-indicadores
+        volumes:
+            - .:/cm-geo-indicadores
+            - node_modules:/cm-geo-indicadores/node_modules
+volumes:
+    node_modules:

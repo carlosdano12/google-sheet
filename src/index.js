@@ -1,5 +1,8 @@
-const app = require("./app");
+const schedule = require("node-schedule");
+require("dotenv").config();
+const { accesGoogleSheet } = require("./spreadsheet");
 
-app.listen(3000, () => {
-  console.log("Servidro iniciado");
+schedule.scheduleJob("0 12 * * *", async () => {
+  console.log("me ejecute carnal");
+  await accesGoogleSheet();
 });

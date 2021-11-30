@@ -4,7 +4,7 @@ const DEFAULT_CONNECTION_PARAMETERS = {
   connectionTimeoutMillis: 800,
   max: 30,
   idleTimeoutMillis: 3000,
-  query_timeout: 2500,
+  query_timeout: 3500,
 };
 
 const PG_CONECTION_ZONIFICACION = {
